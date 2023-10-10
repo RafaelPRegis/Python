@@ -5,14 +5,30 @@ Programa com o objetivo de receber um IP e fazer os calculos de variação.
 from time import sleep
 
 
+#Inicialização
+print()
+mensagem = "Iniciando... ... ... ... ... ..."
+
+for i in range (2):
+    for caractere in mensagem:
+        print(caractere, end='', flush=True)
+        sleep(0.1)
+    print()
+
+sleep(1)
+
 
 while True:
-
+    
+    print()
+    print('-=-' * 20, "\n")
+    
     #IP e Mascara
-    IP = str(input('Digite o IP para o calculo: '))
+    IP = str(input('Digite o IP para o calculo: ')).split(".")
     Masc = int(input('Agora digite a mascara: '))
 
-    print('\n', '-=-' * 20)
+    print()
+    print('-=-' * 20)
 
     #Subrede e Hosts
     SubRede = int(input('\nQual a subrede necessaria? '))
@@ -29,14 +45,19 @@ while True:
     #Mascara Nova e Variação
     Masc += Bits
     Variação = 2 ** (32 - Masc)
+    VariB = Variação
+    
 
     #Variação Grande
     if Variação > 256:
         Variação = Variação / 256
 
+
     #Print da Tabela
     for i in range(1, SubRede):
-        print(IP, SubRede, Bits, Variação, Masc)
+        cunclu = Variação - VariB
+        print(f"{IP[:2]}.{cunclu}.0 | {IP[:3]}.1 -- {IP[:2]}.{Variação - 1}.254 | {IP[:2]}.{Variação - 1}.255")
+        Variação += VariB
     
 
     #Confirmação para o Loop Da calculadora
