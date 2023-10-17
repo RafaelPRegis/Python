@@ -7,7 +7,7 @@ from time import sleep
 
 #Inicialização
 print()
-mensagem = "Iniciando... ... ... ... ... ..."
+mensagem = "Iniciando... ... ... ... ..."
 
 for i in range (2):
     for caractere in mensagem:
@@ -36,6 +36,7 @@ while True:
     SB = int(2)
     Bits = int(1)
 
+
     #Calculo para Bits
     while SB < SubRede:
         SB = SB ** Bits
@@ -45,23 +46,38 @@ while True:
     #Mascara Nova e Variação
     Masc += Bits
     Variação = 2 ** (32 - Masc)
-    VariB = Variação
     
 
     #Variação Grande
     if Variação > 256:
         Variação = Variação / 256
+    VariB = Variação
 
+
+    #Imprime o cabeçalho
+    print("{:^25} {:^40} {:^50}".format('END.SubRede', 'END.Hosts', 'BroadCast'))
+    print("==="*40)
 
     #Print da Tabela
     for i in range(1, SubRede):
         cunclu = Variação - VariB
-        print(f"{IP[:2]}.{cunclu}.0 | {IP[:3]}.1 -- {IP[:2]}.{Variação - 1}.254 | {IP[:2]}.{Variação - 1}.255")
+
+        #Função para imprimir os dados de forma organizada
+        def imprimir_tabela(dados):
+            for linha in dados:
+                print("{:<25} | {:^30} | {:^25}".format(*linha))
+
+        #Informação para imprimir
+        dados = [
+            ("{}.{}.0".format(IP[:2], cunclu), "{}.1 --- {}.{}.254".format(IP[:3], IP[:2], (Variação - 1)), "{}.{}.255".format(IP[:2], (Variação - 1))),
+        ]
+        #Print e atualização da Variação
+        imprimir_tabela(dados)
         Variação += VariB
     
 
     #Confirmação para o Loop Da calculadora
-    if str(input("Deseja calcular novamente? ")).upper() == "N":
+    if str(input("Deseja calcular novamente? [Y/N]")).upper() != "Y":
         break
     
     #Reiniciando
